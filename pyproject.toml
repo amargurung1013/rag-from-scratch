@@ -1,0 +1,13 @@
+[project]
+name = "rag-from-scratch"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "beautifulsoup4>=4.14.3",
+    "chromadb>=1.5.5",
+    "groq>=1.1.1",
+    "requests>=2.32.5",
+    "sentence-transformers>=5.3.0",
+]
