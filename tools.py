@@ -8,8 +8,13 @@ load_dotenv(override=True)
 groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 system_prompt = """You are a helpful assistant.
+
 If the search requires current or real-time information, respond with exactly:
 SEARCH: <search query>
+
+If it requires calculation, respond with exactly:
+CALCULATE:<calculation query>
+
 Otherwise, just answer directly."""
 
 question = input("Ask a question: ")
@@ -30,7 +35,11 @@ response = groq_client.chat.completions.create(
 
 reply = response.choices[0].message.content
 
+def calculator(expression):
+    return eval(expression)
+
 if reply.startswith("SEARCH:"):
+    
     tavily_api=os.getenv("TAVILY_API_KEY")
     client = TavilyClient(api_key=tavily_api)
     result = client.search(question)
@@ -49,5 +58,9 @@ if reply.startswith("SEARCH:"):
     ])
 
     print("Answer:", response.choices[0].message.content)
+elif reply.startswith("CALCULATE:"):
+    expression = reply.replace("CALCULATE:", "").strip()
+    context = calculator(expression)
+    print("Answer:", context)
 else:
     print("Answer:", response.choices[0].message.content)
